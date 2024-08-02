@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ITF Widget</title>
+    <link rel="stylesheet" href="/dist/style.css" />
+
+    <!-- Include React and ReactDOM from a CDN/have already available in globals -->
+    <script src="https://unpkg.com/react/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom/umd/react-dom.development.js"></script>
+  </head>
+  <body>
+    <!-- Standard widget integration -->
+    <div data-itf-widget-counter></div>
+    <div data-itf-widget-hello-itf></div>
+
+    <br />
+    <hr />
+    <br />
+
+    <!-- Enahnced widget integration with prop pass through -->
+    <div data-itf-widget-counter data-text="This is a test of a prop!"></div>
+    <div data-itf-widget-hello-itf data-color-text="true"></div>
+
+    <!-- Load IFT Widget SDK script after react and react DOM has been loaded in -->
+    <script type="module" src="/dist/itf-widget-sdk.umd.js"></script>
+  </body>
+</html>
