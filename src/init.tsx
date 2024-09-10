@@ -31,3 +31,4 @@ const initWidgets = () => {
 
 // Initialise widgets when the script loads
 document.addEventListener('DOMContentLoaded', initWidgets)
+initWidgets()
