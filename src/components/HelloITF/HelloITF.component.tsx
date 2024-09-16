@@ -4,18 +4,20 @@ import { HelloITFText } from './HelloITF.styles'
 
 interface Data {
   data: {
-    DisplayName: string
-    event: {
-      id: string
-      [key: string]: any
-    }
-    [key: string]: any
+    competitionCategory?: string
+    competitionCategoryId: string
+    createdAt: string
+    deletedAt?: string
+    groups: any[]
+    id: string
+    name: string
+    tennisId?: string
+    updatedAt: string
   }[]
 }
 
 const fetchData = async (): Promise<Data> => {
-  const url =
-    'https://world-rowing-api.soticcloud.net/stats/api/race?filter[event.competitionId]=299157d0-d077-4653-8af6-e96406496047&filter[DateString]=&filterOptions[DateString]=subString&include=event.competition%2CraceStatus&sort[DateString]=asc'
+  const url = 'https://d1kfeesv1ktpnk.cloudfront.net/competition?include=groups'
   const { data } = await axios.get(url)
   return data
 }
@@ -42,7 +44,14 @@ export const HelloITF = ({ colorText }: HelloITFProps) => {
         <h1>Data</h1>
         <ul>
           {data?.data?.map((item, index) => (
-            <li key={`${item.event.id}-${index}`}>{item.DisplayName}</li>
+            <li key={`${item.id}-${index}`}>
+              {item.name}
+              <ul>
+                {item.groups.map((item) => (
+                  <li key={item.id}>{item.name}</li>
+                ))}
+              </ul>
+            </li>
           ))}
         </ul>
       </div>
