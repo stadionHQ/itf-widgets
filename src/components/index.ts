@@ -1,2 +1,2 @@
-export { Counter } from './Counter'
-export { HelloITF } from './HelloITF'
+export { MatchCard } from './MatchCard'
+export { Tournament } from './Tournament'

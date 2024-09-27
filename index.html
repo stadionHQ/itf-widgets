@@ -5,24 +5,27 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ITF Widget</title>
-    <link rel="stylesheet" href="/dist/style.css" />
 
-    <!-- Include React and ReactDOM from a CDN/have already available in globals -->
+    <!-- TODO: Trim this font import down to only weights that are needed -->
+    <!-- FONTS - Include these if not already imported -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- REACT - Include React and ReactDOM from a CDN/have already available in globals -->
     <script src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
   </head>
   <body>
-    <!-- Standard widget integration -->
-    <div data-itf-widget-counter></div>
-    <div data-itf-widget-hello-itf></div>
-
-    <br />
-    <hr />
-    <br />
-
-    <!-- Enahnced widget integration with prop pass through -->
-    <div data-itf-widget-counter data-text="This is a test of a prop!"></div>
-    <div data-itf-widget-hello-itf data-color-text="true"></div>
+    <!-- Widget implementation -->
+    <div data-stadion-tournament data-tournament-id="TOURNAMENT_ID"></div>
 
     <!-- Load IFT Widget SDK script after react and react DOM has been loaded in -->
     <script type="module" src="/dist/itf-widget-sdk.umd.js"></script>

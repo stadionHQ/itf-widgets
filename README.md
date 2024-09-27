@@ -46,6 +46,14 @@ StyledComponents has been chosen so that once the build is compiled, all the CSS
 
 Styles will also be scoped, minimising the chances of conflicting styles.
 
+### Passing Props to Components
+
+In all props that a component is set up to received MUST be marked as possibly undefined, ie `id?: string`, even if `id` is a required attribute.
+This is because with this integration, we cannot guarantee the presence of the data that we require to render the component correctly.
+Marking all props as undefined protects against a prop being missed from the final implementation of the widget, and causing errors that do not fail gracefully.
+
+On that same point, we also cannot guarantee the type of the data passed through. To be investigated if this is something we can guard against, ie perhaps build a helper function which verifies the validity of each prop against the intended type before rendering the component, for example with an early return.
+
 ## How to Develop/Build/Run?
 
 Start with `npm i` in the project directory.

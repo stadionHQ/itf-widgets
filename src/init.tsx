@@ -1,29 +1,22 @@
+import { Tournament } from 'components'
 import ReactDOM from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from 'react-query'
-import { Counter, HelloITF } from './components'
+import 'translations/i18n'
 
 const initWidgets = () => {
-  // Find all divs with data-itf-... attributes
-  const counterWidgets = document.querySelectorAll(
-    'div[data-itf-widget-counter]',
-  )
-  const helloITFWidgets = document.querySelectorAll(
-    'div[data-itf-widget-hello-itf]',
-  )
+  // Find all divs with data-stadion-... attributes
+  const tournaments = document.querySelectorAll('div[data-stadion-tournament]')
 
   // Create a React root for each widget
-  counterWidgets.forEach((widget) => {
-    const text = (widget as HTMLElement).getAttribute('data-text')
-    const root = ReactDOM.createRoot(widget)
-    root.render(<Counter text={text ?? undefined} />)
-  })
-  helloITFWidgets.forEach((widget) => {
-    const colorText = (widget as HTMLElement).getAttribute('data-color-text')
+  tournaments.forEach((tournament) => {
+    const id =
+      (tournament as HTMLElement).getAttribute('data-tournament-id') ??
+      undefined
     const queryClient = new QueryClient()
-    const root = ReactDOM.createRoot(widget)
+    const root = ReactDOM.createRoot(tournament)
     root.render(
       <QueryClientProvider client={queryClient}>
-        <HelloITF colorText={colorText === '' || colorText === 'true'} />
+        <Tournament id={id} />
       </QueryClientProvider>,
     )
   })
