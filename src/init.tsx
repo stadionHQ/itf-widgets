@@ -1,4 +1,4 @@
-import { Tournament } from 'components'
+import { Tournament } from 'molecules'
 import ReactDOM from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import 'translations/i18n'

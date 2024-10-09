@@ -1,1 +1,1 @@
-export type { MatchCard } from './MatchCard'
+export type { Event, Match } from './Event'
