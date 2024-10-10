@@ -64,9 +64,9 @@ export const Player = styled.div<{ $selected?: boolean }>`
   min-height: 20px;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  gap: 6px;
-  padding: 16px 8px;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 16px 16px 16px 8px;
 
   ${(props) =>
     props.$selected
@@ -74,6 +74,13 @@ export const Player = styled.div<{ $selected?: boolean }>`
           background-color: #ebeeff;
         `
       : ''}
+`
+
+export const PlayerDetails = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
 `
 
 export const IconPlaceholder = styled.div`
@@ -88,4 +95,33 @@ export const PlayerName = styled(LabelXS1)`
 
 export const PlayerNumber = styled(LabelXS1)`
   color: #6c757d;
+`
+
+export const PlayerStats = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+`
+
+export const PlayerStatsRoundScore = styled.div``
+
+export const PlayerStatsCurrent = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+`
+
+export const PlayerStatsCurrentServeIndicator = styled.div`
+  width: 8px;
+  height: 8px;
+  background-color: #000436;
+  border-radius: 100%;
+`
+
+export const PlayerStateCurrentRoundScore = styled.div`
+  padding: 2px 4px;
+  background-color: #ced4ff;
+  border-radius: 4px;
 `

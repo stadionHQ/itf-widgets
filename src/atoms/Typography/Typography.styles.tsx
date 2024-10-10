@@ -48,6 +48,14 @@ export const LabelS1 = styled.span`
   color: #5d5d5d;
 `
 
+export const LabelS2 = styled.span`
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+  color: #000;
+`
+
 export const LabelM1 = styled.span`
   font-family: 'Lato', sans-serif;
   font-size: 18px;

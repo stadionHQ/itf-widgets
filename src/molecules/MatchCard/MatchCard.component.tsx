@@ -1,4 +1,4 @@
-import { LabelXS1, LabelXS2, Recording } from 'atoms'
+import { LabelS2, LabelXS1, LabelXS2, Recording, Tick } from 'atoms'
 import {
   Card,
   CompetitionInfoRow,
@@ -6,9 +6,15 @@ import {
   IconPlaceholder,
   LiveStatus,
   Player,
+  PlayerDetails,
   PlayerName,
   PlayerNumber,
   Players,
+  PlayerStateCurrentRoundScore,
+  PlayerStats,
+  PlayerStatsCurrent,
+  PlayerStatsCurrentServeIndicator,
+  PlayerStatsRoundScore,
   StatusLiveMatch,
   StatusPreMatch,
   StatusRow,
@@ -78,14 +84,78 @@ export const MatchCard = ({
 
       <Players>
         <Player>
-          <IconPlaceholder />
-          <PlayerName>P. Lastname</PlayerName>
-          <PlayerNumber>#8</PlayerNumber>
+          <PlayerDetails>
+            <IconPlaceholder />
+            <PlayerName>P. Lastname</PlayerName>
+            <PlayerNumber>#8</PlayerNumber>
+          </PlayerDetails>
+          {status === 'live' || status === 'post' ? (
+            <PlayerStats>
+              {status === 'live' ? (
+                <PlayerStatsCurrent>
+                  <PlayerStatsCurrentServeIndicator />
+                  <PlayerStateCurrentRoundScore>
+                    <LabelS2>30</LabelS2>
+                  </PlayerStateCurrentRoundScore>
+                </PlayerStatsCurrent>
+              ) : null}
+              <PlayerStatsRoundScore>
+                <LabelXS2>8</LabelXS2>
+                <sup>
+                  <LabelXS1>8</LabelXS1>
+                </sup>
+              </PlayerStatsRoundScore>
+              <PlayerStatsRoundScore>
+                <LabelXS2>8</LabelXS2>
+                <sup>
+                  <LabelXS1>8</LabelXS1>
+                </sup>
+              </PlayerStatsRoundScore>
+              <PlayerStatsRoundScore>
+                <LabelXS2>8</LabelXS2>
+                <sup>
+                  <LabelXS1>8</LabelXS1>
+                </sup>
+              </PlayerStatsRoundScore>
+            </PlayerStats>
+          ) : null}
         </Player>
-        <Player $selected={true}>
-          <IconPlaceholder />
-          <PlayerName>P. Lastname</PlayerName>
-          <PlayerNumber>#8</PlayerNumber>
+        <Player $selected={status === 'post'}>
+          <PlayerDetails>
+            <IconPlaceholder />
+            <PlayerName>P. Lastname</PlayerName>
+            <PlayerNumber>#8</PlayerNumber>
+          </PlayerDetails>
+          {status === 'live' || status === 'post' ? (
+            <PlayerStats>
+              {status === 'post' ? <Tick /> : null}
+              {status === 'live' ? (
+                <PlayerStatsCurrent>
+                  <PlayerStateCurrentRoundScore>
+                    <LabelS2>30</LabelS2>
+                  </PlayerStateCurrentRoundScore>
+                </PlayerStatsCurrent>
+              ) : null}
+              <PlayerStatsRoundScore>
+                <LabelXS2>8</LabelXS2>
+                <sup>
+                  <LabelXS1>8</LabelXS1>
+                </sup>
+              </PlayerStatsRoundScore>
+              <PlayerStatsRoundScore>
+                <LabelXS2>8</LabelXS2>
+                <sup>
+                  <LabelXS1>8</LabelXS1>
+                </sup>
+              </PlayerStatsRoundScore>
+              <PlayerStatsRoundScore>
+                <LabelXS2>8</LabelXS2>
+                <sup>
+                  <LabelXS1>8</LabelXS1>
+                </sup>
+              </PlayerStatsRoundScore>
+            </PlayerStats>
+          ) : null}
         </Player>
       </Players>
     </Card>

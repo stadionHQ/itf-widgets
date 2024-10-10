@@ -3,6 +3,7 @@ import {
   Heading3,
   LabelM1,
   LabelS1,
+  LabelS2,
   LabelXS1,
   LabelXS2,
 } from './Typography.styles'
@@ -18,6 +19,8 @@ const TypographyDisplay = () => {
       <LabelXS2>Label XS 2</LabelXS2>
       <hr />
       <LabelS1>Label S 1</LabelS1>
+      <hr />
+      <LabelS2>Label S 2</LabelS2>
       <hr />
       <LabelM1>Label M 1</LabelM1>
     </div>
