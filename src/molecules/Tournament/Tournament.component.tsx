@@ -10,9 +10,11 @@ import {
   LabelM1,
   LabelS1,
 } from 'atoms'
-import { MatchCard } from 'molecules'
-import { useState } from 'react'
-import { Datum } from 'types/Event'
+import axios from 'axios'
+import { MatchCard } from 'molecules/MatchCard'
+import React, { useMemo, useState } from 'react'
+import { useQuery } from 'react-query'
+import { CourtPayload } from 'types'
 import {
   Container,
   HeaderRow,
@@ -23,54 +25,35 @@ import {
   ViewMore,
   ViewTournamentLink,
 } from './Tournament.styles'
+import { TournamentProps } from './Tournament.types'
 
-export const Tournament = ({ eventCategoryId, _name, venue, draws }: Datum) => {
-  // const fakeMatches = [
-  //   {
-  //     id: '1',
-  //     competitionType: 'competitionType',
-  //     competitonStage: 'competitonStage',
-  //     courtName: 'courtName',
-  //     matchTime: '88h 88m',
-  //   },
-  //   {
-  //     id: '2',
-  //     competitionType: 'competitionType',
-  //     competitonStage: 'competitonStage',
-  //     courtName: 'courtName',
-  //     matchTime: '88h 88m',
-  //   },
-  //   {
-  //     id: '3',
-  //     competitionType: 'competitionType',
-  //     competitonStage: 'competitonStage',
-  //     courtName: 'courtName',
-  //     matchTime: '88h 88m',
-  //   },
-  //   {
-  //     id: '4',
-  //     competitionType: 'competitionType',
-  //     competitonStage: 'competitonStage',
-  //     courtName: 'courtName',
-  //     matchTime: '88h 88m',
-  //   },
-  //   {
-  //     id: '5',
-  //     competitionType: 'competitionType',
-  //     competitonStage: 'competitonStage',
-  //     courtName: 'courtName',
-  //     matchTime: '88h 88m',
-  //   },
-  //   {
-  //     id: '6',
-  //     competitionType: 'competitionType',
-  //     competitonStage: 'competitonStage',
-  //     courtName: 'courtName',
-  //     matchTime: '88h 88m',
-  //   },
-  // ]
-
+export const Tournament = ({ eventId, name, location }: TournamentProps) => {
   const [viewAll, setViewAll] = useState<boolean>(false)
+
+  const limitNumbers = useMemo(() => {
+    return !viewAll ? { courts: 1, matches: 3 } : { courts: 99, matches: 99 }
+  }, [viewAll])
+
+  const fetchData = async (): Promise<CourtPayload[]> => {
+    const url = `https://d1kfeesv1ktpnk.cloudfront.net/custom/matchesByCourt/${eventId}`
+    const { data } = await axios.get(url)
+    return data
+  }
+
+  const { data, error, isLoading } = useQuery<CourtPayload[], Error>(
+    'courtsData',
+    fetchData,
+  )
+
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+
+  if (error || !eventId) {
+    return <div>An error occurred: {error?.message}</div>
+  }
+
+  console.log(data?.slice(0, 1))
 
   const handleLoadMore = () => {
     setViewAll(!viewAll)
@@ -80,19 +63,20 @@ export const Tournament = ({ eventCategoryId, _name, venue, draws }: Datum) => {
     <Container>
       <HeaderRow>
         <HeaderRowContent>
-          <Heading2>{_name}</Heading2>
+          <Heading2>{name}</Heading2>
           <Divider direction={DividerDirection.VERTICAL} />
           <IconPlaceholder />
           <Locale>
             <IconPlaceholder />
             <LabelS1>
-              {venue?.city}{' '}
-              {venue?.country?.name ? `, ${venue?.country?.name}` : ''}
+              {location?.city ? `${location?.city}` : ''}
+              {location?.city && location?.country ? ', ' : ''}
+              {location?.country ? `${location?.country}` : ''}
             </LabelS1>
           </Locale>
         </HeaderRowContent>
         <ViewTournamentLink
-          href={`https://www.itftennis.com/en/tournament?id=${eventCategoryId}`}
+          href={`https://www.itftennis.com/en/tournament?id=${eventId}`}
           target="_blank"
         >
           <LabelM1>View tournament</LabelM1>
@@ -100,25 +84,20 @@ export const Tournament = ({ eventCategoryId, _name, venue, draws }: Datum) => {
         </ViewTournamentLink>
       </HeaderRow>
 
-      <Heading3>Centre Court</Heading3>
-
-      <MatchCardGrid>
-        {viewAll
-          ? draws?.map((draw) =>
-              draw?.rounds.map((round) =>
-                round?.matches?.map((match) => (
-                  <MatchCard key={match.id} {...match} />
-                )),
-              ),
-            )
-          : draws?.map((draw) =>
-              draw?.rounds.map((round) =>
-                round?.matches
-                  ?.slice(0, 3)
-                  .map((match) => <MatchCard key={match.id} {...match} />),
-              ),
-            )}
-      </MatchCardGrid>
+      {data?.slice(0, limitNumbers.courts).map((dateOrganisedCourtData) =>
+        dateOrganisedCourtData.courts
+          .slice(0, limitNumbers.courts)
+          .map((court) => (
+            <React.Fragment key={court.courtName}>
+              <Heading3>{court.courtName}</Heading3>
+              <MatchCardGrid>
+                {court.matches.slice(0, limitNumbers.matches).map((match) => (
+                  <MatchCard key={match.id} data={match} />
+                ))}
+              </MatchCardGrid>
+            </React.Fragment>
+          )),
+      )}
 
       <ViewMore>
         <Button

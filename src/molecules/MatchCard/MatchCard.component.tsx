@@ -1,4 +1,7 @@
-import { LabelS2, LabelXS1, LabelXS2, Recording, Tick } from 'atoms'
+import { LabelXS1, LabelXS2, Recording, Tick } from 'atoms'
+import { intervalToDuration } from 'date-fns'
+import { useMemo } from 'react'
+import { Match } from 'types'
 import {
   Card,
   CompetitionInfoRow,
@@ -10,57 +13,56 @@ import {
   PlayerName,
   PlayerNumber,
   Players,
-  PlayerStateCurrentRoundScore,
   PlayerStats,
-  PlayerStatsCurrent,
-  PlayerStatsCurrentServeIndicator,
   PlayerStatsRoundScore,
   StatusLiveMatch,
   StatusPreMatch,
   StatusRow,
 } from './MatchCard.styles'
 
-// { court, scheduleText, matchStatus }: Match
-export const MatchCard = ({
-  status = 'pre',
-}: {
-  status?: 'pre' | 'live' | 'post'
-}) => {
+export const MatchCard = ({ data }: { data: Match }) => {
+  console.log(data)
+
+  // TODO: Remove once confirmed we no longer need any custom text and all will be returned from the API
   // const { t } = useTranslation()
   // {/* {t('matches.status.completed')} */}
+
+  const status = useMemo(() => {
+    return data.matchStatus.name === 'In Progress'
+      ? 'live'
+      : data.matchStatus.name === 'Scheduled'
+        ? 'pre'
+        : 'post'
+  }, [data.matchStatus.name])
+
+  const formattedDuration = useMemo(() => {
+    if (!data.duration) return null
+    const [hours, minutes, seconds] = data.duration.split(':').map(Number)
+    const totalMinutes = hours * 60 + minutes
+    const totalSeconds = totalMinutes * 60 + seconds
+    const duration = intervalToDuration({ start: 0, end: totalSeconds * 1000 })
+    return `${duration.hours ? `${duration.hours}h` : ''} ${duration.minutes ? `${duration.minutes}m` : ''}`
+  }, [data.duration])
 
   return (
     <Card>
       <Container>
-        <LabelXS2>
-          CompetitionType
-          {/* {court?.name} */}
-        </LabelXS2>
+        <LabelXS2>{data.discipline._name}</LabelXS2>
         <CompetitionInfoRow>
-          <LabelXS1>
-            CompetitionStage
-            {/* {scheduleText} */}
-          </LabelXS1>{' '}
-          ·{' '}
-          <LabelXS1>
-            CourtName
-            {/* {court?.name} */}
-          </LabelXS1>{' '}
-          ·{' '}
-          <LabelXS1>
-            88hr 88m
-            {/* {scheduleText} */}
-          </LabelXS1>
+          <LabelXS1>{data.matchStatus.displayName}</LabelXS1> ·{' '}
+          <LabelXS1>{data.court.name}</LabelXS1>
+          {formattedDuration ? (
+            <>
+              {' '}
+              · <LabelXS1>{formattedDuration}</LabelXS1>
+            </>
+          ) : null}
         </CompetitionInfoRow>
 
-        {/* TODO: Dependant on the current status */}
         {status === 'pre' ? (
           <StatusPreMatch>
             <StatusRow>
-              <LabelXS2>
-                Estimated Time GMT
-                {/* {matchStatus?.name} */}
-              </LabelXS2>
+              <LabelXS2>{data.scheduleText}</LabelXS2>
             </StatusRow>
           </StatusPreMatch>
         ) : null}
@@ -69,95 +71,61 @@ export const MatchCard = ({
             <StatusRow>
               <LiveStatus>
                 <Recording />
-                <LabelXS2>Livestream</LabelXS2>
+                <LabelXS2>{data.matchStatus.displayName}</LabelXS2>
               </LiveStatus>
-              <LabelXS1>matchStatus</LabelXS1>
+              <LabelXS1>{data.matchStatus.name}</LabelXS1>
             </StatusRow>
           </StatusLiveMatch>
         ) : null}
         {status === 'post' ? (
           <StatusRow>
-            <LabelXS2>Completed</LabelXS2>
+            <LabelXS2>{data.matchStatus.displayName}</LabelXS2>
           </StatusRow>
         ) : null}
       </Container>
 
-      <Players>
-        <Player>
-          <PlayerDetails>
-            <IconPlaceholder />
-            <PlayerName>P. Lastname</PlayerName>
-            <PlayerNumber>#8</PlayerNumber>
-          </PlayerDetails>
-          {status === 'live' || status === 'post' ? (
-            <PlayerStats>
-              {status === 'live' ? (
-                <PlayerStatsCurrent>
-                  <PlayerStatsCurrentServeIndicator />
-                  <PlayerStateCurrentRoundScore>
-                    <LabelS2>30</LabelS2>
-                  </PlayerStateCurrentRoundScore>
-                </PlayerStatsCurrent>
-              ) : null}
-              <PlayerStatsRoundScore>
-                <LabelXS2>8</LabelXS2>
-                <sup>
-                  <LabelXS1>8</LabelXS1>
-                </sup>
-              </PlayerStatsRoundScore>
-              <PlayerStatsRoundScore>
-                <LabelXS2>8</LabelXS2>
-                <sup>
-                  <LabelXS1>8</LabelXS1>
-                </sup>
-              </PlayerStatsRoundScore>
-              <PlayerStatsRoundScore>
-                <LabelXS2>8</LabelXS2>
-                <sup>
-                  <LabelXS1>8</LabelXS1>
-                </sup>
-              </PlayerStatsRoundScore>
-            </PlayerStats>
-          ) : null}
-        </Player>
-        <Player $selected={status === 'post'}>
-          <PlayerDetails>
-            <IconPlaceholder />
-            <PlayerName>P. Lastname</PlayerName>
-            <PlayerNumber>#8</PlayerNumber>
-          </PlayerDetails>
-          {status === 'live' || status === 'post' ? (
-            <PlayerStats>
-              {status === 'post' ? <Tick /> : null}
-              {status === 'live' ? (
-                <PlayerStatsCurrent>
-                  <PlayerStateCurrentRoundScore>
-                    <LabelS2>30</LabelS2>
-                  </PlayerStateCurrentRoundScore>
-                </PlayerStatsCurrent>
-              ) : null}
-              <PlayerStatsRoundScore>
-                <LabelXS2>8</LabelXS2>
-                <sup>
-                  <LabelXS1>8</LabelXS1>
-                </sup>
-              </PlayerStatsRoundScore>
-              <PlayerStatsRoundScore>
-                <LabelXS2>8</LabelXS2>
-                <sup>
-                  <LabelXS1>8</LabelXS1>
-                </sup>
-              </PlayerStatsRoundScore>
-              <PlayerStatsRoundScore>
-                <LabelXS2>8</LabelXS2>
-                <sup>
-                  <LabelXS1>8</LabelXS1>
-                </sup>
-              </PlayerStatsRoundScore>
-            </PlayerStats>
-          ) : null}
-        </Player>
-      </Players>
+      {data.sides && data.sides.length > 0 ? (
+        <Players>
+          {data.sides.map((player, i) =>
+            player ? (
+              // TODO: Connect this $selected prop up to the data source when possible
+              <Player $selected={i === 0}>
+                <PlayerDetails>
+                  <IconPlaceholder />
+                  <PlayerName>{player.sidePlayer[0]?.player._name}</PlayerName>
+                  {player.sidePlayer[0]?.player.singlesSeedingRank ? (
+                    <PlayerNumber>
+                      #{player.sidePlayer[0]?.player.singlesSeedingRank}
+                    </PlayerNumber>
+                  ) : null}
+                </PlayerDetails>
+                {status === 'live' || status === 'post' ? (
+                  <PlayerStats>
+                    {/* TODO: Link these up when data is available */}
+                    {i === 0 ? <Tick /> : null}
+                    {/* {status === 'live' ? (
+                    <PlayerStatsCurrent>
+                      <PlayerStatsCurrentServeIndicator />
+                      <PlayerStateCurrentRoundScore>
+                        <LabelS2>30</LabelS2>
+                      </PlayerStateCurrentRoundScore>
+                    </PlayerStatsCurrent>
+                  ) : null} */}
+                    {player.sideSets.map((set) => (
+                      <PlayerStatsRoundScore>
+                        <LabelXS2>{set.setScore}</LabelXS2>
+                        <sup>
+                          <LabelXS1>{set.setTieBreakScore}</LabelXS1>
+                        </sup>
+                      </PlayerStatsRoundScore>
+                    ))}
+                  </PlayerStats>
+                ) : null}
+              </Player>
+            ) : null,
+          )}
+        </Players>
+      ) : null}
     </Card>
   )
 }
