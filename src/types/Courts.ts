@@ -1,28 +1,20 @@
 export interface CourtPayload {
   courts: CourtElement[]
-  date: Date
+  date: string
 }
 
 export interface CourtElement {
-  courtName: CourtNameEnum
+  courtName: string
   matches: Match[]
-}
-
-export enum CourtNameEnum {
-  Court1 = 'Court 1',
-  Court2 = 'Court 2',
-  Court3 = 'Court 3',
-  Court4 = 'Court 4',
-  Court5 = 'Court 5',
 }
 
 export interface Match {
   court: MatchCourt
   courtId: string
-  createdAt: Date
+  createdAt: string
   currentServerSide: null
   currentServerSideId: null | string
-  dateStartLocal: Date
+  dateStartLocal: string
   deletedAt: null
   discipline: Discipline
   duration: null | string
@@ -39,56 +31,35 @@ export interface Match {
   tennisId: null
   tie: null
   tieId: null
-  updatedAt: Date
+  updatedAt: string
   winnerSide: null
   winnerSideId: null | string
 }
 
 export interface MatchCourt {
-  createdAt: Date
+  createdAt: string
   deletedAt: null
   id: string
   matches: null
-  name: CourtNameEnum
-  updatedAt: Date
+  name: string
+  updatedAt: string
 }
 
 export interface Discipline {
-  _name?: Name
-  createdAt: Date
+  _name?: string
+  createdAt: string
   deletedAt: null
   id: string
-  name: DisciplineName
+  name: string
   tennisId: null
-  type?: Type
-  updatedAt: Date
-  displayName?: DisplayName
-}
-
-export enum Name {
-  MenSDoubles = "Men's Doubles",
-}
-
-export enum DisplayName {
-  Completed = 'Completed',
-  Live = 'Live',
-  Scheduled = 'Scheduled',
-}
-
-export enum DisciplineName {
-  Completed = 'Completed',
-  InProgress = 'In Progress',
-  MenS = "Men's",
-  Scheduled = 'Scheduled',
-}
-
-export enum Type {
-  Doubles = 'Doubles',
+  type?: string
+  updatedAt: string
+  displayName?: string
 }
 
 export interface Side {
   countryId: null
-  createdAt: Date
+  createdAt: string
   deletedAt: null
   id: string
   match: null
@@ -101,11 +72,11 @@ export interface Side {
   tennisId: null
   tie: null
   tieId: null
-  updatedAt: Date
+  updatedAt: string
 }
 
 export interface SidePlayer {
-  createdAt: Date
+  createdAt: string
   deletedAt: null
   id: string
   player: Player
@@ -113,14 +84,14 @@ export interface SidePlayer {
   side: null
   sideId: string
   tennisId: null
-  updatedAt: Date
+  updatedAt: string
 }
 
 export interface Player {
   _name: string
   country: null
   countryId: null | string
-  createdAt: Date
+  createdAt: string
   deletedAt: null
   doublesSeedingRank: null
   id: string
@@ -129,11 +100,11 @@ export interface Player {
   singlesSeedingRank: null | string
   team: null
   teamId: string
-  updatedAt: Date
+  updatedAt: string
 }
 
 export interface SideSet {
-  createdAt: Date
+  createdAt: string
   deletedAt: null
   id: string
   set: Set
@@ -143,16 +114,16 @@ export interface SideSet {
   setTieBreakScore: number
   side: null
   tennisId: string
-  updatedAt: Date
+  updatedAt: string
 }
 
 export interface Set {
-  createdAt: Date
+  createdAt: string
   deletedAt: null
   duration: number
   id: string
   match: null
   matchId: string
   setNumber: number
-  updatedAt: Date
+  updatedAt: string
 }

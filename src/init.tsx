@@ -1,4 +1,5 @@
 import { Tournament } from 'molecules'
+import { JSONBlock } from 'organisms'
 import ReactDOM from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import 'translations/i18n'
@@ -41,7 +42,12 @@ const initWidgets = () => {
     const root = ReactDOM.createRoot(jsonBlock)
     root.render(
       <QueryClientProvider client={queryClient}>
-        <JSONBlock url={url} refreshTime={refreshTime} />
+        <JSONBlock
+          url={url}
+          refreshTime={
+            isNaN(Number(refreshTime)) ? undefined : Number(refreshTime)
+          }
+        />
       </QueryClientProvider>,
     )
   })

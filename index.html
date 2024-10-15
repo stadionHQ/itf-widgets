@@ -24,8 +24,21 @@
     <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
   </head>
   <body>
-    <!-- Widget implementation -->
-    <div data-stadion-tournament data-tournament-id="TOURNAMENT_ID"></div>
+    <!-- Tournament Widget Implementation -->
+    <div
+      data-stadion-tournament
+      data-event-id="6d102e78-dacd-463b-a17f-5e0404711e19"
+      data-name="TOURNAMENT NAME"
+      data-location-city="Test city"
+      data-location-country="Test country"
+    ></div>
+
+    <!-- JSON Block Test Widget Implementation -->
+    <div
+      data-stadion-json-block
+      data-url="https://d1kfeesv1ktpnk.cloudfront.net/custom/matchesByCourt/6d102e78-dacd-463b-a17f-5e0404711e19"
+      data-refresh-time="12000"
+    ></div>
 
     <!-- Load IFT Widget SDK script after react and react DOM has been loaded in -->
     <script type="module" src="/dist/itf-widget-sdk.umd.js"></script>

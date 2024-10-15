@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
 import { MatchCard } from './MatchCard.component'
+import { liveMatchMock, postMatchMock, preMatchMock } from './MatchCard.mocks'
 
 const meta = {
   title: 'Molecules / MatchCard',
@@ -11,8 +12,8 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Pre: Story = { args: { status: 'pre' } }
+export const Pre: Story = { args: { data: preMatchMock } }
 
-export const Live: Story = { args: { status: 'live' } }
+export const Live: Story = { args: { data: liveMatchMock } }
 
-export const Post: Story = { args: { status: 'post' } }
+export const Post: Story = { args: { data: postMatchMock } }
