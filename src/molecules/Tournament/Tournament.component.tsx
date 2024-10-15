@@ -27,7 +27,12 @@ import {
 } from './Tournament.styles'
 import { TournamentProps } from './Tournament.types'
 
-export const Tournament = ({ eventId, name, location }: TournamentProps) => {
+export const Tournament = ({
+  eventId,
+  name,
+  location,
+  flagUrls,
+}: TournamentProps) => {
   const [viewAll, setViewAll] = useState<boolean>(false)
 
   const limitNumbers = useMemo(() => {
@@ -53,8 +58,6 @@ export const Tournament = ({ eventId, name, location }: TournamentProps) => {
     return <div>An error occurred: {error?.message}</div>
   }
 
-  console.log(data?.slice(0, 1))
-
   const handleLoadMore = () => {
     setViewAll(!viewAll)
   }
@@ -63,11 +66,19 @@ export const Tournament = ({ eventId, name, location }: TournamentProps) => {
     <Container>
       <HeaderRow>
         <HeaderRowContent>
-          <Heading2>{name}</Heading2>
+          {name ? <Heading2>{name}</Heading2> : null}
           <Divider direction={DividerDirection.VERTICAL} />
-          <IconPlaceholder />
-          <Locale>
+          {flagUrls?.tournament ? (
+            <img src={flagUrls.tournament} alt={name ?? ''} />
+          ) : (
             <IconPlaceholder />
+          )}
+          <Locale>
+            {flagUrls?.country ? (
+              <img src={flagUrls.country} alt={location?.country ?? ''} />
+            ) : (
+              <IconPlaceholder />
+            )}
             <LabelS1>
               {location?.city ? `${location?.city}` : ''}
               {location?.city && location?.country ? ', ' : ''}

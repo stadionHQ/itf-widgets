@@ -21,36 +21,34 @@ import {
 } from './MatchCard.styles'
 
 export const MatchCard = ({ data }: { data: Match }) => {
-  console.log(data)
-
   // TODO: Remove once confirmed we no longer need any custom text and all will be returned from the API
   // const { t } = useTranslation()
   // {/* {t('matches.status.completed')} */}
 
   const status = useMemo(() => {
-    return data.matchStatus.name === 'In Progress'
+    return data?.matchStatus.name === 'In Progress'
       ? 'live'
-      : data.matchStatus.name === 'Scheduled'
+      : data?.matchStatus.name === 'Scheduled'
         ? 'pre'
         : 'post'
-  }, [data.matchStatus.name])
+  }, [data?.matchStatus.name])
 
   const formattedDuration = useMemo(() => {
-    if (!data.duration) return null
+    if (!data?.duration) return null
     const [hours, minutes, seconds] = data.duration.split(':').map(Number)
     const totalMinutes = hours * 60 + minutes
     const totalSeconds = totalMinutes * 60 + seconds
     const duration = intervalToDuration({ start: 0, end: totalSeconds * 1000 })
     return `${duration.hours ? `${duration.hours}h` : ''} ${duration.minutes ? `${duration.minutes}m` : ''}`
-  }, [data.duration])
+  }, [data?.duration])
 
   return (
     <Card>
       <Container>
-        <LabelXS2>{data.discipline._name}</LabelXS2>
+        <LabelXS2>{data?.discipline._name}</LabelXS2>
         <CompetitionInfoRow>
-          <LabelXS1>{data.matchStatus.displayName}</LabelXS1> ·{' '}
-          <LabelXS1>{data.court.name}</LabelXS1>
+          <LabelXS1>{data?.matchStatus.displayName}</LabelXS1> ·{' '}
+          <LabelXS1>{data?.court.name}</LabelXS1>
           {formattedDuration ? (
             <>
               {' '}
@@ -62,7 +60,7 @@ export const MatchCard = ({ data }: { data: Match }) => {
         {status === 'pre' ? (
           <StatusPreMatch>
             <StatusRow>
-              <LabelXS2>{data.scheduleText}</LabelXS2>
+              <LabelXS2>{data?.scheduleText}</LabelXS2>
             </StatusRow>
           </StatusPreMatch>
         ) : null}
@@ -71,20 +69,20 @@ export const MatchCard = ({ data }: { data: Match }) => {
             <StatusRow>
               <LiveStatus>
                 <Recording />
-                <LabelXS2>{data.matchStatus.displayName}</LabelXS2>
+                <LabelXS2>{data?.matchStatus.displayName}</LabelXS2>
               </LiveStatus>
-              <LabelXS1>{data.matchStatus.name}</LabelXS1>
+              <LabelXS1>{data?.matchStatus.name}</LabelXS1>
             </StatusRow>
           </StatusLiveMatch>
         ) : null}
         {status === 'post' ? (
           <StatusRow>
-            <LabelXS2>{data.matchStatus.displayName}</LabelXS2>
+            <LabelXS2>{data?.matchStatus.displayName}</LabelXS2>
           </StatusRow>
         ) : null}
       </Container>
 
-      {data.sides && data.sides.length > 0 ? (
+      {data?.sides && data?.sides.length > 0 ? (
         <Players>
           {data.sides.map((player, i) =>
             player ? (
